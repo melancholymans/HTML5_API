@@ -1,0 +1,70 @@
+<DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>kouza zyouhou</title>
+
+  <script>
+    var balance = 0.0;
+    childWindowUrl = "http://192.168.11.15:8000/childWindow.html";
+    var childwindows = new Array();
+    var childWindowWidth = 250;
+    var childWinodwHeight = 100;
+    var windowTopCoord = 0;
+
+    function deposit()
+    {
+      var amountBox = document.querySelector("#amount");
+      balance += parseFloat(amountBox.value);
+      alert("genzai no zandaka " + balance ) ;
+    }
+
+    function withdraw()
+    {
+      var amountBox = document.querySelector("#amount");
+      balance -= parseFloat(amount.value);
+      alert("genzaino zandaka " + balance) ;
+    }
+
+    function newWindow()
+    {
+      var topEdge = window.screenY;
+      var rhsEdge = window.screenX + window.outerWidth;
+      var win = window.open(childWindowUrl,"","width=250" +
+                                              ", height=100" +
+                                              ", top=" + (topEdge + windowTopCoord + 2) +
+                                              ", left=" + (rhsEdge + 2));
+      windowTopCoord += 175;
+      childwindows.push(win);
+    }
+    function broadcast()
+    {
+      for(var i = 0;i < childWindows.length;i++){
+        childwindows[i].postMessage(balance,"*");
+      }
+    }
+    function onMessage(e)
+    {
+      if(e.origin == "http://192.168.11.15"){
+        alert("main window" + e.origin + "in massage");
+        balance -= e.data;
+        broadcast();
+      }
+      else{
+        alert("child window" + e.origin + "message not");
+      }
+    }
+    window.addEventListener("message",onMessage,true);
+
+  </script>
+</head>
+<body>
+  <label>zandaka</label>
+  <input type"text" id="amount" />
+  <buttom onclick="deposit()">input many</buttom>
+  <buttom onclick="withdraw()">out</buttom>
+  <br/><br/>
+  <button onclick="newWindow()">new window</buttom>
+  <button onclick="broadcast()">commni</buttom>
+</body>
+</htm>
