@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Get position</title>
+  <style>
+    body{
+      font-family: callbrl,arial;
+      font-size: 12pt;
+    }
+    input{
+      background-color: lightblue;
+    }
+    #messageArea_{
+      background-color: lightblue;
+      width: 800px;
+    }
+    #resultArea{
+      border: 1px solid blue;
+      background-color: yellow;
+      padding: 0px 20px 20px 20px;
+      width: 400px;
+      float: right;
+    }
+    label{
+      width: 150px;
+      float: left;
+    }
+  </style>
+
+  <script>
+    function doGet()
+    {
+      if(navigator.geolocation){
+        messageAreaElem.innerHTML = "you brauzer HTML5 location sapport";
+        navigator.geolocation.getCurrentPosition(positionCallback,positionErrorCallback);
+      }
+      else{
+        messageAreaElem.innerHTML = "you brauzer HTML5 location not sapport";
+      }
+    }
+    function positionCallback(position)
+    {
+      var latitude = position.coords.latitude;
+      var longitude = position.coords.longitude;
+      var accuracy = position.coords.accuracy;
+      var heading = position.coords.heading;
+      var speed = position.coords.speed;
+      var altitude = position.coords.altitude;
+      var altitudeAccuracy = position.coords.altitudeAccuracy;
+      var timestamp = new Date();
+      timestamp.setTime(position.timestamp);
+      if(!latitude || !longitude){
+        messageAreaElem.innerHTML = "you brauzer support OK but not use";
+      }
+      else{
+        document.getElementById("latitude").value = latitude;
+        document.getElementById("longitude").value = longitude;
+        document.getElementById("locationAccuracy").value = accuracy;
+        document.getElementById("heading").value = heading;
+        document.getElementById("speed").value = speed;
+        document.getElementById("altitude").value = altitude;
+        document.getElementById("altitudeAccurac").value = altitudeAccurac;
+        document.getElementById("timestamp").value = timestamp;
+      }
+    }
+    function positionErrorCallback(error)
+    {
+      messageAreaElem.innerHTML = "Error" + error.code + "," + error.message;
+    }
+    function onLoad()
+    {
+      document.getElementById("getButtom").addEventListener("click",doGet,true);
+      messageAreaElem = document.getElementById("messageArea");
+    }
+    window.addEventListener("load",onLoad,true);
+  </script>
+</head>
+<body>
+  <div id="resultArea">
+    <h3>main info</h3>
+    <label for="latitude">latitude</label>
+    <input type"text" id="latitude" size="50" readonly="true" /><br/>
+    <label for="longitude">longitude</label>
+    <input type"text" id="longitude" size="50" readonly="true" /><br/>
+    <label for="locationAccuracy">locationAccuracy</label>
+    <input type"text" id="locationAccuracy" size="50" readonly="true" /><br/>
+    <h3>option info</h3>
+    <label for="heading">heading</label>
+    <input type"text" id="heading" size="50" readonly="true" /><br/>
+    <label for="speed">speed(m/s)</label>
+    <input type"text" id="speed" size="50" readonly="true" /><br/>
+    <label for="altitude">altitude(m)</label>
+    <input type"text" id="altitude" size="50" readonly="true" /><br/>
+    <label for="altitudeAccurac">altitudeAccurac(m)</label>
+    <input type"text" id="altitudeAccurac" size="50" readonly="true" /><br/>
+    <label for="timestamp">altitudeAccurac(m)</label>
+    <input type"text" id="timestamp" size="50" readonly="true" /><br/>
+  </div>
+  <h1>current position</h1>
+  <buttom onclick="doGet()" id="getButtom">get position</buttom>
+
+</body>
+</html>
